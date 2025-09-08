@@ -50,13 +50,14 @@ public class VtM20thAnnEdProbabilityCalcOptimized {
             for (int numOnes = 0; numOnes <= nDice - numSuccesses; numOnes++) {
                 int numFailures = nDice - numSuccesses - numOnes;
 
-                if (pFail == 0.0 && numFailures > 0) continue;
+                if (pFail == 0.0 && numFailures > 0)
+                    continue;
 
                 int netSuccesses = numSuccesses - numOnes;
 
                 if (netSuccesses > 0) {
-                    double prob = multinomialProbability(nDice, numSuccesses, numOnes, numFailures,
-                            pSuccess, pOne, pFail);
+                    double prob = multinomialProbability(nDice, numSuccesses, numOnes, numFailures, pSuccess, pOne,
+                            pFail);
                     if (prob > 0)
                         totalProbability += prob;
                 }
@@ -95,6 +96,32 @@ public class VtM20thAnnEdProbabilityCalcOptimized {
         }
     }
 
+//    static double calculateBotchProbability(int nDice, int difficulty) {
+//        double pSuccess = (10 - difficulty + 1) / 10.0;
+//        double pOne = 0.1;
+//        double pFail = Math.max(0.0, 1.0 - pSuccess - pOne);
+//
+//        double botchProbability = 0.0;
+//
+//        for (int numSuccesses = 0; numSuccesses <= nDice; numSuccesses++) {
+//            for (int numOnes = 1; numOnes <= nDice - numSuccesses; numOnes++) {
+//                int numFailures = nDice - numSuccesses - numOnes;
+//
+//                if (pFail == 0.0 && numFailures > 0) continue;
+//
+//                int netSuccesses = numSuccesses - numOnes;
+//
+//                if (netSuccesses <= 0) {
+//                    double prob = multinomialProbability(nDice, numSuccesses, numOnes, numFailures,
+//                            pSuccess, pOne, pFail);
+//                    botchProbability += prob;
+//                }
+//            }
+//        }
+//
+//        return botchProbability;
+//    }
+
     static double calculateBotchProbability(int nDice, int difficulty) {
         double pSuccess = (10 - difficulty + 1) / 10.0;
         double pOne = 0.1;
@@ -106,13 +133,14 @@ public class VtM20thAnnEdProbabilityCalcOptimized {
             for (int numOnes = 1; numOnes <= nDice - numSuccesses; numOnes++) {
                 int numFailures = nDice - numSuccesses - numOnes;
 
-                if (pFail == 0.0 && numFailures > 0) continue;
+                if (pFail == 0.0 && numFailures > 0) {
+                    continue;
+                }
 
-                int netSuccesses = numSuccesses - numOnes;
-
-                if (netSuccesses <= 0) {
-                    double prob = multinomialProbability(nDice, numSuccesses, numOnes, numFailures,
-                            pSuccess, pOne, pFail);
+                // V20 rule: botch only if no successes rolled, and at least one '1'
+                if (numSuccesses == 0 && numOnes > 0) {
+                    double prob = multinomialProbability(nDice, numSuccesses, numOnes, numFailures, pSuccess, pOne,
+                            pFail);
                     botchProbability += prob;
                 }
             }
@@ -121,9 +149,10 @@ public class VtM20thAnnEdProbabilityCalcOptimized {
         return botchProbability;
     }
 
-    static double multinomialProbability(int n, int numSuccesses, int numOnes, int numFailures,
-                                         double pSuccess, double pOne, double pFail) {
-        if (pSuccess < 0 || pOne < 0 || pFail < 0) return 0.0;
+    static double multinomialProbability(int n, int numSuccesses, int numOnes, int numFailures, double pSuccess,
+            double pOne, double pFail) {
+        if (pSuccess < 0 || pOne < 0 || pFail < 0)
+            return 0.0;
 
         double coeff = 1.0;
 
@@ -141,9 +170,6 @@ public class VtM20thAnnEdProbabilityCalcOptimized {
             coeff /= i;
         }
 
-        return coeff * Math.pow(pSuccess, numSuccesses)
-                * Math.pow(pOne, numOnes)
-                * Math.pow(pFail, numFailures);
+        return coeff * Math.pow(pSuccess, numSuccesses) * Math.pow(pOne, numOnes) * Math.pow(pFail, numFailures);
     }
 }
-
