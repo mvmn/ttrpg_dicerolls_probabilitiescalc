@@ -138,7 +138,7 @@ public class VtM20thAnnEdProbabilityCalcOptimized {
                 }
 
                 // V20 rule: botch only if no successes rolled, and at least one '1'
-                if (numSuccesses == 0 && numOnes > 0) {
+                if ((numSuccesses - numOnes) < 0) {
                     double prob = multinomialProbability(nDice, numSuccesses, numOnes, numFailures, pSuccess, pOne,
                             pFail);
                     botchProbability += prob;

@@ -133,7 +133,7 @@ public class VtM20thAnnEdProbabilityCalc {
 
                 int netSuccesses = numSuccesses - numOnes;
 
-                if (netSuccesses <= 0) {
+                if (netSuccesses < 0) {
                     double prob = multinomialBotchProbability(nDice, numSuccesses, numOnes, numFailures, difficulty);
                     botchProbability += prob;
                 }
