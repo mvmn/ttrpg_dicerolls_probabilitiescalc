@@ -101,7 +101,7 @@ public class VtM5edProbabilityCalcOptimized {
         BigDecimal pOne = new BigDecimal("0.1");
         BigDecimal pFail = BigDecimal.ONE.subtract(pSuccess, mc).subtract(pOne, mc);
 
-        if (pSuccess.compareTo(BigDecimal.ZERO) < 0 || pFail.compareTo(BigDecimal.ZERO) < 0)
+        if (pSuccess.compareTo(BigDecimal.ZERO) < 0)
             return BigDecimal.ZERO;
 
         BigDecimal coeff = multinomialCoefficientBD(n, numSuccesses, numOnes, numFailures);
